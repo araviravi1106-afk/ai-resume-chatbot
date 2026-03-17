@@ -1,0 +1,70 @@
+============================================================
+PROJECTS
+============================================================
+
+
+PROJECT 1: AI Resume Assistant Chatbot (Final Year Project)
+------------------------------------------------------------
+
+Description:
+Aravindh's final year project is an AI Resume Assistant Chatbot. The chatbot is designed to answer interview questions about him automatically based on his resume and project details. It uses Retrieval Augmented Generation to retrieve relevant information from his resume dataset and generate accurate, professional responses.
+
+Technologies Used:
+Python, LangChain, ChromaDB (vector database), Sentence Transformer embeddings, Ollama (local LLM), Streamlit (web interface)
+
+Role: Solo developer — designed the RAG architecture, built the ingestion pipeline, prompt engineering, and deployed the full Streamlit interface.
+
+Key Features:
+- Resume data ingestion and chunking
+- Embedding generation using Sentence Transformers
+- Vector storage and semantic search using ChromaDB
+- Prompt engineering to enforce polite interview-style answers
+- Local LLM inference using Ollama (no internet required)
+- Interactive chat interface using Streamlit
+
+
+PROJECT 2: Personal Productivity Web Application
+-------------------------------------------------
+
+Description:
+A comprehensive personal productivity web application built using React. This application bundles multiple productivity tools into a single web interface to help users manage their daily tasks and time efficiently.
+
+Technologies Used:
+React, JavaScript, HTML5, CSS
+
+Features Included:
+World clock, alarm timer, calendar, notes manager, habit tracker, to-do manager, QR scanner, image locker, and speech-to-text translator.
+
+Role: Solo developer — designed and implemented all features from scratch using React.
+
+
+PROJECT 3: ATM Simulation System
+---------------------------------
+
+Description:
+An ATM Simulation System developed using Java and JDBC. The system simulates real ATM operations and connects to a database for data storage and retrieval.
+
+Technologies Used:
+Java, JDBC, SQL Database
+
+Features:
+- User authentication (PIN verification)
+- Balance enquiry
+- Cash withdrawal
+- Cash deposit
+
+Role: Solo developer — implemented the complete backend logic, database integration, and user flow.
+
+
+PROJECT 4: Personal Portfolio Website
+--------------------------------------
+
+Description:
+A personal portfolio website developed to showcase Aravindh's skills, projects, and contact details. The site serves as a professional online presence for academic and job opportunities.
+
+Technologies Used:
+HTML, CSS, JavaScript
+
+Live URL: https://araviravi1106-afk.github.io/my-portfolio/
+
+Role: Solo developer — designed the layout, implemented all pages, and deployed using GitHub Pages.

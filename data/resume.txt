@@ -1,0 +1,124 @@
+============================================================
+PERSONAL INFORMATION
+============================================================
+
+Name: Aravindh S
+Location: Auroville, Puducherry, India
+Email: araviravi1106@gmail.com
+Portfolio: https://araviravi1106-afk.github.io/my-portfolio/
+GitHub: https://github.com/araviravi1106-afk
+
+
+============================================================
+EDUCATION
+============================================================
+
+Degree: Bachelor of Engineering in Computer Science and Engineering
+College: Mailam Engineering College
+Study Period: 2022 to 2026
+CGPA: 8.36
+
+Aravindh is currently pursuing a Bachelor of Engineering in Computer Science and Engineering at Mailam Engineering College. His study period is from 2022 to 2026 and his current CGPA is 8.36. His academic journey helped him build strong foundations in programming, software development, and computer science concepts. During his studies, he also focused on practical learning through projects related to web development and Artificial Intelligence.
+
+
+============================================================
+INTRODUCTION / PROFILE SUMMARY
+============================================================
+
+Aravindh S is a Computer Science and Engineering student from Mailam Engineering College with a CGPA of 8.36. He has a strong interest in Artificial Intelligence, Machine Learning, and software development. He enjoys building practical projects that solve real-world problems.
+
+During his college journey, he developed several projects including a productivity web application using React, an ATM simulation system using Java and JDBC, and a personal portfolio website. Currently, he is working on an AI Resume Assistant Chatbot using technologies like Python, LangChain, ChromaDB, and Streamlit.
+
+Aravindh is a quick learner, enjoys solving technical problems, and always tries to learn technologies beyond the academic syllabus. His goal is to grow as a software developer and eventually become an AI engineer.
+
+
+============================================================
+TECHNICAL SKILLS
+============================================================
+
+Programming Languages: Python, C, basic Java
+
+Web Development: HTML5, CSS, JavaScript, Bootstrap, MERN stack (MongoDB, Express, React, Node.js)
+
+Artificial Intelligence and Machine Learning: AI fundamentals, Machine Learning basics, Prompt Engineering, Retrieval Augmented Generation (RAG)
+
+Tools and Development Environments: Visual Studio Code, Git, GitHub, Streamlit, LangChain, ChromaDB, Sentence Transformers, Ollama
+
+
+============================================================
+STRENGTHS
+============================================================
+
+Aravindh's key strengths are problem-solving ability, adaptability, continuous learning mindset, teamwork, and communication skills. He enjoys analyzing problems and finding efficient solutions. He can quickly learn new technologies when required and apply them in practical projects. He also works well in teams and communicates ideas clearly.
+
+
+============================================================
+WEAKNESSES
+============================================================
+
+One of Aravindh's weaknesses is that earlier he used to spend too much time trying to perfect every detail of a project. However, he learned that in professional environments balancing quality with deadlines is important. Now he focuses on completing tasks efficiently while maintaining good quality. He continuously tries to improve his time management and prioritization skills.
+
+
+============================================================
+CAREER GOALS
+============================================================
+
+Aravindh's short-term goal is to secure a good position in a technology company where he can apply and improve his technical skills. His long-term goal is to become an Artificial Intelligence engineer and build intelligent systems that solve real-world problems. In the next five years, he sees himself as a skilled software engineer working on advanced technologies such as Artificial Intelligence and Machine Learning. He wants to gain strong industry experience, contribute to impactful projects, and continuously improve his technical knowledge.
+
+
+============================================================
+WHY HIRE ARAVINDH
+============================================================
+
+Aravindh combines strong technical fundamentals with a continuous learning mindset. He has hands-on experience in Python, web development, and AI-related technologies such as LangChain and vector databases. He has also built multiple projects which helped him understand how real-world systems work. He is adaptable, hardworking, and eager to learn new technologies quickly. He enjoys solving problems and working collaboratively in a team environment. He believes he can contribute to the company while continuously improving his skills.
+
+
+============================================================
+PERSONALITY AND WORK ETHIC
+============================================================
+
+Aravindh's personality can be described as curious, disciplined, and focused on continuous learning. He believes in maintaining a strong work ethic by being responsible, organized, and committed to completing tasks with quality and consistency. He enjoys learning new technologies and improving his skills through practical projects and hands-on experience. He values teamwork, clear communication, and maintaining a positive attitude when working with others. These qualities help him stay motivated, productive, and continuously improve both technically and personally.
+
+
+============================================================
+UNIQUENESS / WHAT MAKES ARAVINDH DIFFERENT
+============================================================
+
+One thing that makes Aravindh unique is his strong interest in learning and building practical applications beyond the academic syllabus. Instead of only focusing on theoretical knowledge, he actively develops projects to understand how technologies work in real-world scenarios. His curiosity to continuously learn new technologies and apply them through practical projects is what makes his profile unique. He is currently developing an AI Resume Assistant Chatbot using Retrieval Augmented Generation with technologies like Python, LangChain, ChromaDB, and Streamlit, which demonstrates his initiative to build advanced AI systems while still in college.
+
+
+============================================================
+LEADERSHIP EXPERIENCE
+============================================================
+
+Aravindh has gained leadership experience during both his school and college education. During his school days, he served as a class leader where he helped coordinate activities between teachers and students. This role helped him develop responsibility, communication, and organizational skills. During his college examinations, he also acted as a peer group leader where he coordinated a group of five students for collaborative study preparation. He helped organize study discussions, clarify concepts, and ensure that everyone stayed focused on preparation. These experiences helped him develop leadership, teamwork, communication, and problem-solving skills.
+
+
+============================================================
+PROBLEM SOLVING APPROACH
+============================================================
+
+When solving a problem, Aravindh first tries to clearly understand the problem and identify the root cause. He analyzes the situation carefully and breaks the problem into smaller manageable parts. This helps him understand which component of the system is causing the issue. He then tests possible solutions step by step and verifies whether the issue is resolved. During programming tasks, he uses debugging techniques, logs, and testing to identify errors. If necessary, he also refers to documentation, online resources, or discusses with teammates to gain additional insights. This structured and logical approach helps him solve problems efficiently and improve his technical understanding.
+
+
+============================================================
+DAILY ROUTINE
+============================================================
+
+Aravindh's daily routine usually starts with planning his tasks for the day. He spends time learning new technologies related to programming, Artificial Intelligence, and software development. He also practices coding, works on personal projects, and improves his technical skills through hands-on development. In addition to learning, he maintains a healthy routine that includes exercise and physical activities such as walking and workouts. He tries to balance learning, project development, and personal growth every day.
+
+
+============================================================
+HOBBIES AND INTERESTS
+============================================================
+
+Aravindh's hobbies include watching movies and series, especially interesting and thought-provoking shows. One of his favorite series is Dark. He also enjoys watching anime and playing games in his free time. Apart from entertainment, he likes staying physically active through swimming and regular exercise. Physical activities help him maintain fitness and stay mentally refreshed. He also enjoys learning new technologies and experimenting with small programming projects during his free time.
+
+He is particularly interested in Artificial Intelligence, Machine Learning, and software development. He enjoys exploring how intelligent systems work and how they can be used to solve real-world problems. He is also interested in building AI-powered applications using technologies such as LangChain, vector databases, and large language models.
+
+
+============================================================
+SALARY EXPECTATION
+============================================================
+
+As a fresher, Aravindh's primary focus is on learning and gaining industry experience. However, based on industry standards and his skills, he would expect a salary in the range of approximately 6 to 9 LPA. He is open to discussion depending on the role, company policies, and growth opportunities.
