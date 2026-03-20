@@ -1,7 +1,7 @@
-# chatbot.py — improved relevance with stronger prompt
+# chatbot.py — uses FAISS instead of ChromaDB
 
 import os
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
@@ -18,12 +18,14 @@ def get_groq_key():
 
 
 def load_vectorstore():
+    """Load the FAISS index saved by ingest.py."""
     embeddings = SentenceTransformerEmbeddings(
         model_name="all-MiniLM-L6-v2"
     )
-    vectorstore = Chroma(
-        persist_directory="vectorstore",
-        embedding_function=embeddings
+    vectorstore = FAISS.load_local(
+        "vectorstore",
+        embeddings,
+        allow_dangerous_deserialization=True  # required by LangChain for FAISS
     )
     return vectorstore
 
@@ -67,15 +69,15 @@ def build_rag_chain():
     retriever = vectorstore.as_retriever(
         search_type="mmr",
         search_kwargs={
-            "k": 4,          # fetch 4 diverse chunks
-            "fetch_k": 15,   # consider top 15 before picking 4
+            "k": 4,
+            "fetch_k": 15,
             "lambda_mult": 0.6
         }
     )
 
     llm = ChatGroq(
         model="llama-3.3-70b-versatile",
-        temperature=0.0,     # 0 = fully deterministic, most factual
+        temperature=0.0,
         max_tokens=500,
         api_key=get_groq_key()
     )
@@ -103,9 +105,7 @@ if __name__ == "__main__":
         "What are his technical skills?",
         "Why should we hire him?",
         "What projects has he built?",
-        "What are his hobbies?",
-        "What is his final year project?",
-        "Where does he see himself in 5 years?"
+        "What are his hobbies?"
     ]
 
     for q in test_questions:

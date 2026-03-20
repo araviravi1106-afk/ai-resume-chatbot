@@ -1,13 +1,12 @@
-# ingest.py — with topic-tagged chunks for better retrieval
+# ingest.py — uses FAISS instead of ChromaDB (no compilation issues)
 
 import os
 import shutil
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 
 
-# Maps section heading keywords to a clean topic tag
 TOPIC_TAGS = {
     "INTRODUCTION": "[TOPIC: Introduction and Profile]",
     "PERSONAL INFORMATION": "[TOPIC: Personal Information]",
@@ -33,7 +32,6 @@ TOPIC_TAGS = {
 
 
 def detect_topic_tag(section_text):
-    """Find the best matching topic tag for a section."""
     upper = section_text.upper()
     for keyword, tag in TOPIC_TAGS.items():
         if keyword in upper:
@@ -42,7 +40,6 @@ def detect_topic_tag(section_text):
 
 
 def load_data(folder="data"):
-    """Read all .txt files and split into sections, tagging each one."""
     documents = []
     for filename in os.listdir(folder):
         if filename.endswith(".txt"):
@@ -53,16 +50,13 @@ def load_data(folder="data"):
                     section = section.strip()
                     if len(section) > 50:
                         tag = detect_topic_tag(section)
-                        # Prepend topic tag to every section
                         tagged_section = f"{tag}\n\n{section}"
                         documents.append(tagged_section)
-
     print(f"✅ Loaded {len(documents)} tagged sections")
     return documents
 
 
 def chunk_text(documents):
-    """Split sections into overlapping chunks."""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=700,
         chunk_overlap=200,
@@ -76,8 +70,8 @@ def chunk_text(documents):
     return all_chunks
 
 
-def store_in_chromadb(chunks):
-    """Clear old store and embed fresh chunks."""
+def store_in_faiss(chunks):
+    """Embed chunks and save to FAISS index folder."""
     if os.path.exists("vectorstore"):
         shutil.rmtree("vectorstore")
         print("🗑️  Cleared old vectorstore")
@@ -86,12 +80,14 @@ def store_in_chromadb(chunks):
         model_name="all-MiniLM-L6-v2"
     )
 
-    vectorstore = Chroma.from_texts(
+    vectorstore = FAISS.from_texts(
         texts=chunks,
-        embedding=embeddings,
-        persist_directory="vectorstore"
+        embedding=embeddings
     )
-    print("✅ Embeddings stored in ChromaDB")
+
+    # Save FAISS index to disk
+    vectorstore.save_local("vectorstore")
+    print("✅ FAISS index saved to ./vectorstore")
     return vectorstore
 
 
@@ -102,7 +98,7 @@ if __name__ == "__main__":
     print("\n✂️  Chunking...")
     chunks = chunk_text(docs)
 
-    print("\n🔢 Embedding and storing...")
-    store_in_chromadb(chunks)
+    print("\n🔢 Embedding and storing in FAISS...")
+    store_in_faiss(chunks)
 
     print("\n🎉 Done! Run: streamlit run app.py\n")
