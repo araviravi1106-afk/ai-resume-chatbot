@@ -1,71 +1,83 @@
-# chatbot.py — improved retrieval and strict prompt
+# chatbot.py — improved relevance with stronger prompt
 
+import os
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_community.llms import Ollama
+from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
+
+def get_groq_key():
+    try:
+        import streamlit as st
+        return st.secrets["GROQ_API_KEY"]
+    except Exception:
+        return os.environ.get("GROQ_API_KEY", "")
+
+
 def load_vectorstore():
-    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = SentenceTransformerEmbeddings(
+        model_name="all-MiniLM-L6-v2"
+    )
     vectorstore = Chroma(
         persist_directory="vectorstore",
         embedding_function=embeddings
     )
     return vectorstore
 
-# ─── Stricter prompt ──────────────────────────────────────────────────────────
-# Key changes:
-# 1. Explicitly forbids answering from outside the context
-# 2. Tells the LLM the candidate's name upfront
-# 3. Gives a clear fallback instruction
 
 INTERVIEW_PROMPT = PromptTemplate(
-    template="""You are a professional AI assistant representing a job candidate named Aravindh S during an interview.
+    template="""You are a professional AI assistant representing Aravindh S in a formal job interview.
 
-STRICT RULES — follow these exactly:
-1. Answer ONLY using the CONTEXT provided below. Do not use any outside knowledge.
-2. If the answer is not found in the CONTEXT, respond exactly with: "I'm sorry, I don't have that specific information about Aravindh at the moment."
-3. Always refer to Aravindh in third person — use "Aravindh" or "he", never "I".
-4. Always begin your answer politely, for example: "Thank you for your question." or "That is a great question."
-5. Keep answers professional, clear, and structured — as if speaking in a formal job interview.
-6. Do not repeat the question back. Go straight to the answer after the polite opening.
-7. Do not add any information that is not present in the CONTEXT.
+YOUR ONLY JOB: Answer the INTERVIEWER'S QUESTION using ONLY the CONTEXT below.
+
+STRICT RULES:
+1. Read the INTERVIEWER'S QUESTION carefully first.
+2. Look through the CONTEXT and find only the parts that directly answer the question.
+3. Ignore any context chunks that are NOT relevant to the question being asked.
+4. Build your answer using ONLY the relevant parts you found.
+5. If no part of the CONTEXT answers the question, say exactly: "I'm sorry, I don't have that specific information about Aravindh at the moment."
+6. Never use outside knowledge. Never guess or assume.
+7. Always refer to Aravindh in third person — "Aravindh" or "he", never "I".
+8. Always open politely: "Thank you for your question." or "That is a great question, sir."
+9. Be concise — 4 to 6 sentences is ideal unless more detail is truly needed.
+10. Sound confident and professional, like an interview spokesperson.
 
 ---
-CONTEXT (verified information about Aravindh S):
+CONTEXT (information retrieved from Aravindh's resume):
 {context}
 ---
 
 INTERVIEWER'S QUESTION: {question}
 
-PROFESSIONAL ANSWER:""",
+PROFESSIONAL ANSWER (use only what is relevant from the context above):""",
     input_variables=["context", "question"]
 )
 
+
 def format_docs(docs):
-    # Show chunk content clearly separated
     return "\n\n---\n\n".join(doc.page_content for doc in docs)
+
 
 def build_rag_chain():
     vectorstore = load_vectorstore()
 
     retriever = vectorstore.as_retriever(
-        search_type="mmr",          # MMR = Maximum Marginal Relevance
-                                    # fetches diverse chunks, not just similar ones
-                                    # this prevents the LLM from seeing
-                                    # the same info repeated 4 times
+        search_type="mmr",
         search_kwargs={
-            "k": 6,                 # retrieve 6 chunks (more coverage)
-            "fetch_k": 20,          # consider top 20 before picking 6 diverse ones
-            "lambda_mult": 0.7      # 0 = max diversity, 1 = max relevance
+            "k": 4,          # fetch 4 diverse chunks
+            "fetch_k": 15,   # consider top 15 before picking 4
+            "lambda_mult": 0.6
         }
     )
 
-    llm = Ollama(
-        model="gemma2:2b",
-        temperature=0.1,            # lower = more factual, less hallucination
+    llm = ChatGroq(
+        model="llama-3.3-70b-versatile",
+        temperature=0.0,     # 0 = fully deterministic, most factual
+        max_tokens=500,
+        api_key=get_groq_key()
     )
 
     chain = (
@@ -77,23 +89,26 @@ def build_rag_chain():
 
     return chain
 
+
 def get_answer(chain, question):
     return chain.invoke(question)
 
 
 if __name__ == "__main__":
-    print("Loading chatbot...")
+    print("🤖 Loading chatbot...")
     chain = build_rag_chain()
 
-    questions = [
+    test_questions = [
         "Tell me about Aravindh",
         "What are his technical skills?",
         "Why should we hire him?",
         "What projects has he built?",
-        "What are his hobbies?"
+        "What are his hobbies?",
+        "What is his final year project?",
+        "Where does he see himself in 5 years?"
     ]
 
-    for q in questions:
-        print(f"\n{'='*50}")
-        print(f"Question: {q}")
-        print(f"Answer: {get_answer(chain, q)}")
+    for q in test_questions:
+        print(f"\n{'='*55}")
+        print(f"❓ {q}")
+        print(f"💬 {get_answer(chain, q)}")

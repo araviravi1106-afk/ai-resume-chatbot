@@ -1,74 +1,108 @@
-# ingest.py
-# This script reads your resume data, splits it into chunks,
-# creates embeddings, and stores them in ChromaDB.
-# You only need to run this ONCE (or whenever you update your resume).
+# ingest.py — with topic-tagged chunks for better retrieval
 
 import os
-from langchain_text_splitters import RecursiveCharacterTextSplitter        # ← fixed
+import shutil
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 
-# ─── STEP 1: Load your data files ────────────────────────────────────────────
+
+# Maps section heading keywords to a clean topic tag
+TOPIC_TAGS = {
+    "INTRODUCTION": "[TOPIC: Introduction and Profile]",
+    "PERSONAL INFORMATION": "[TOPIC: Personal Information]",
+    "EDUCATION": "[TOPIC: Education and Academic Background]",
+    "TECHNICAL SKILLS": "[TOPIC: Technical Skills and Programming]",
+    "STRENGTHS": "[TOPIC: Strengths and Strong Points]",
+    "WEAKNESSES": "[TOPIC: Weaknesses and Areas of Improvement]",
+    "CAREER GOALS": "[TOPIC: Career Goals and Future Plans]",
+    "FIVE YEAR": "[TOPIC: Five Year Plan and Long Term Goals]",
+    "FINAL YEAR PROJECT": "[TOPIC: Final Year Project and AI Chatbot]",
+    "TECHNOLOGIES USED": "[TOPIC: Technologies Used in Project]",
+    "PROJECTS": "[TOPIC: Projects and Applications Built]",
+    "SALARY": "[TOPIC: Salary Expectation]",
+    "LEADERSHIP": "[TOPIC: Leadership Experience]",
+    "UNIQUENESS": "[TOPIC: Uniqueness and What Makes Aravindh Different]",
+    "PERSONALITY": "[TOPIC: Personality and Work Ethic]",
+    "PROBLEM SOLVING": "[TOPIC: Problem Solving Approach]",
+    "DAILY ROUTINE": "[TOPIC: Daily Routine and Schedule]",
+    "HOBBIES": "[TOPIC: Hobbies and Personal Interests]",
+    "INTERESTS": "[TOPIC: Interests and Passion Areas]",
+    "WHY HIRE": "[TOPIC: Why Hire Aravindh]",
+}
+
+
+def detect_topic_tag(section_text):
+    """Find the best matching topic tag for a section."""
+    upper = section_text.upper()
+    for keyword, tag in TOPIC_TAGS.items():
+        if keyword in upper:
+            return tag
+    return "[TOPIC: General Information about Aravindh]"
+
 
 def load_data(folder="data"):
-    """Read all .txt files from the data folder and combine them."""
-    all_text = ""
+    """Read all .txt files and split into sections, tagging each one."""
+    documents = []
     for filename in os.listdir(folder):
         if filename.endswith(".txt"):
             with open(os.path.join(folder, filename), "r", encoding="utf-8") as f:
                 content = f.read()
-                all_text += f"\n\n--- {filename} ---\n\n" + content
-    return all_text
+                sections = content.split("============================================================")
+                for section in sections:
+                    section = section.strip()
+                    if len(section) > 50:
+                        tag = detect_topic_tag(section)
+                        # Prepend topic tag to every section
+                        tagged_section = f"{tag}\n\n{section}"
+                        documents.append(tagged_section)
 
-# ─── STEP 2: Split text into chunks ──────────────────────────────────────────
+    print(f"✅ Loaded {len(documents)} tagged sections")
+    return documents
 
-def chunk_text(text):
-    """
-    Split long text into smaller chunks.
-    chunk_size=400: each chunk is about 400 characters
-    chunk_overlap=80: chunks overlap by 80 chars so we don't lose context at boundaries
-    """
+
+def chunk_text(documents):
+    """Split sections into overlapping chunks."""
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=400,
-        chunk_overlap=80,
-        separators=["\n\n", "\n", ".", " "]
+        chunk_size=700,
+        chunk_overlap=200,
+        separators=["\n\n", "\n", ". ", " "]
     )
-    chunks = splitter.split_text(text)
-    print(f"✅ Created {len(chunks)} text chunks.")
-    return chunks
+    all_chunks = []
+    for doc in documents:
+        chunks = splitter.split_text(doc)
+        all_chunks.extend(chunks)
+    print(f"✅ Created {len(all_chunks)} chunks")
+    return all_chunks
 
-# ─── STEP 3: Create embeddings and store in ChromaDB ─────────────────────────
 
 def store_in_chromadb(chunks):
-    """
-    Convert each chunk into a vector (a list of numbers that represent meaning),
-    then store those vectors in ChromaDB so we can search them later.
-    """
-    # SentenceTransformers is a free, local embedding model — no API key needed
+    """Clear old store and embed fresh chunks."""
+    if os.path.exists("vectorstore"):
+        shutil.rmtree("vectorstore")
+        print("🗑️  Cleared old vectorstore")
+
     embeddings = SentenceTransformerEmbeddings(
-        model_name="all-MiniLM-L6-v2"  # Small, fast, works great on CPU
+        model_name="all-MiniLM-L6-v2"
     )
 
-    # Store everything in ChromaDB (saves to the 'vectorstore' folder)
     vectorstore = Chroma.from_texts(
         texts=chunks,
         embedding=embeddings,
         persist_directory="vectorstore"
     )
-
-    print("✅ Embeddings stored in ChromaDB at ./vectorstore")
+    print("✅ Embeddings stored in ChromaDB")
     return vectorstore
 
-# ─── MAIN ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    print("📄 Loading resume data...")
-    raw_text = load_data("data")
+    print("\n📄 Loading data...")
+    docs = load_data("data")
 
-    print("✂️  Splitting into chunks...")
-    chunks = chunk_text(raw_text)
+    print("\n✂️  Chunking...")
+    chunks = chunk_text(docs)
 
-    print("🔢 Creating embeddings and storing in ChromaDB...")
+    print("\n🔢 Embedding and storing...")
     store_in_chromadb(chunks)
 
-    print("\n🎉 Ingestion complete! Your resume is now searchable.")
+    print("\n🎉 Done! Run: streamlit run app.py\n")

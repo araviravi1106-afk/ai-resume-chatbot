@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+ 
+# Environment files — never push your API key
+.env
+.streamlit/secrets.toml
+ 
+# VS Code
+.vscode/
+ 
+# OS files
+.DS_Store
+Thumbs.db
+ 
+# NOTE: vectorstore/ is NOT ignored — it must be pushed to GitHub
+# so Streamlit Cloud can use it without running ingest.py
+ 
